@@ -5,9 +5,8 @@ import Statistics from "@/pages/statistics";
 
 export default function Page() {
   return (
-    <>
-    <Dashboard/>
-    <Statistics />
-</>
+    <div>
+    </div>
+
   );
 }
