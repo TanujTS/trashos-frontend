@@ -1,0 +1,116 @@
+"use client";
+
+import { useState } from 'react';
+import { FaExclamationTriangle, FaRegLightbulb } from "react-icons/fa";
+import UpNav from "@/components/up-nav";
+import Navbar from "@/components/navbar";
+
+export default function Statistics() {
+    const [selectedPeriod, setSelectedPeriod] = useState('Weekly');
+    const periods = ['Weekly', 'Monthly', 'Yearly'];
+
+    // Simulated props/data for IMP DEETS
+    const impDeets = {
+        recycledItems: 12,
+        co2Averted: 0.5, // tonnes
+        earned: 200.4,   // INR
+        treesSaved: 0.8,
+        wasteGenerated: 4.3, // kg
+        fuelSaved: 13.7 // L
+    };
+
+    return (
+        <div className="min-h-screen bg-background px-4 pt-6 pb-28 font-sans">
+            <UpNav title="Statistics" />
+
+            {/* Period Selector */}
+            <div className="flex justify-between items-center mt-6 px-2">
+                {periods.map((period) => (
+                    <button
+                        key={period}
+                        onClick={() => setSelectedPeriod(period)}
+                        className={`
+                            h-24 w-24 rounded-full flex items-center justify-center text-sm font-semibold transition-all duration-300
+                            ${selectedPeriod === period
+                                ? 'bg-primary text-foreground scale-105 shadow-lg'
+                                : 'bg-card text-foreground hover:bg-card'}
+                        `}
+                    >
+                        {period}
+                    </button>
+                ))}
+            </div>
+
+            {/* Vertical Rectangles */}
+            <div className="flex gap-4 mt-8 h-auto">
+                {/* Left Card - IMP DEETS (Green) */}
+                <div className="flex-1 bg-primary rounded-[30px] p-5 flex flex-col gap-4">
+                    <div className="flex justify-between items-start">
+                        <h3 className="font-bold text-lg text-primary-foreground">IMP DEETS</h3>
+                        <div className="h-8 w-8 rounded-full bg-foreground flex items-center justify-center text-secondary-foreground text-sm">
+                            <FaExclamationTriangle />
+                        </div>
+                    </div>
+
+                    <div className="space-y-3 text-sm font-medium text-primary-foreground">
+                        <div>
+                            <p className='text-secondary-foreground'>No of items recycled:</p>
+                            <p>= {impDeets.recycledItems}</p>
+                        </div>
+                        <div>
+                            <p className='text-secondary-foreground'>CO2 averted:</p>
+                            <p>~ {impDeets.co2Averted} tonnes</p>
+                        </div>
+                        <div>
+                            <p className='text-secondary-foreground'>Earned so far</p>
+                            <p>~ INR {impDeets.earned}</p>
+                        </div>
+                        <div>
+                            <p className='text-secondary-foreground'>Trees Saved</p>
+                            <p>~ {impDeets.treesSaved}</p>
+                        </div>
+                        <div>
+                            <p className='text-secondary-foreground'>Waste generated</p>
+                            <p>~ {impDeets.wasteGenerated}kg</p>
+                        </div>
+                        <div>
+                            <p className='text-secondary-foreground'>Fuel Saved</p>
+                            <p>~ {impDeets.fuelSaved}L</p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Right Card - FUN FACT (Black) */}
+                <div className="flex-1 bg-foreground rounded-[30px] p-5 flex flex-col gap-4 relative overflow-hidden">
+                    <div className="flex justify-between items-start">
+                        <h3 className="font-bold text-lg text-primary">FUN FACT</h3>
+                        <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-sm">
+                            <FaRegLightbulb />
+                        </div>
+                    </div>
+
+                    <div className="text-sm leading-relaxed text-secondary-foreground">
+                        <p>
+                            Recycling a <span className="text-primary">single ton</span> of <span className="text-primary">paper</span> -
+                            enabled by proper segregation - saves approximately
+                            <span className="text-primary"> 7,000 gallons</span> of <span className="text-primary">water</span> and enough energy
+                            to save significant amounts of fossil fuels.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {/* Overview */}
+            <h2 className="mt-8 text-xl font-bold text-foreground">Overview</h2>
+
+            {/* White Rectangle Box (Graph Placeholder) */}
+            <div className="mt-4 w-full bg-card rounded-[30px] h-64 p-6 border border-foreground flex items-center justify-center text-center">
+                <p className="text-foreground font-medium max-w-[200px]">
+                    graph of co2 averted and fuel saved
+                </p>
+            </div>
+
+            <Navbar />
+        </div>
+    );
+}

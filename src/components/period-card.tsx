@@ -11,7 +11,7 @@ export default function PeriodCards({
 }: PeriodCardsProps) {
   return (
     <div className="relative mt-8 flex items-end">
-      
+
       {/* Yearly (back, left) */}
       <div
         className="
@@ -19,15 +19,15 @@ export default function PeriodCards({
           w-40
           h-40
           rounded-2xl
-          bg-white 
+          bg-card 
           p-4
           shadow-md
           rotate-z-6
         "
       >
-        <p className="font-semibold text-black">Yearly</p>
-        <p className="text-sm text-black/60">CO2 emissions</p>
-        <p className="text-[#C3E75F] font-semibold">
+        <p className="font-semibold text-foreground">Yearly</p>
+        <p className="text-sm text-foreground/60">CO2 emissions</p>
+        <p className="text-primary font-semibold">
           {yearly} tonnes
         </p>
       </div>
@@ -41,15 +41,15 @@ export default function PeriodCards({
           w-40
           h-40
           rounded-2xl
-          bg-[#C3E75F]
+          bg-primary
           p-4
           shadow-lg
           -rotate-z-6
         "
       >
-        <p className="font-semibold text-white">Monthly</p>
-        <p className="text-sm text-white/80">CO2 emissions</p>
-        <p className="text-white font-semibold">
+        <p className="font-semibold text-secondary-foreground">Monthly</p>
+        <p className="text-sm text-secondary-foreground/80">CO2 emissions</p>
+        <p className="text-secondary-foreground font-semibold">
           {monthly} tonnes
         </p>
       </div>
@@ -62,15 +62,15 @@ export default function PeriodCards({
           w-40
           h-40
           rounded-2xl
-          bg-black
+          bg-foreground
           p-4
           shadow-xl
           rotate-z-2
         "
       >
-        <p className="font-semibold text-[#C3E75F]">Weekly</p>
-        <p className="text-sm text-white/60">CO2 emissions</p>
-        <p className="text-white font-semibold">
+        <p className="font-semibold text-primary">Weekly</p>
+        <p className="text-sm text-secondary-foreground/60">CO2 emissions</p>
+        <p className="text-secondary-foreground font-semibold">
           {weekly} tonnes
         </p>
       </div>

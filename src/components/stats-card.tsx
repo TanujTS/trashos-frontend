@@ -30,13 +30,13 @@ export default function StatsCard({
       >
 
         {/* Vertical Rectangle Decoration */}
-        <div className="absolute right-4 top-1/2 -translate-y-1/2 w-16 h-1/2 bg-[#C3E75F] rounded-md" />
+        <div className="absolute right-4 top-1/2 -translate-y-1/2 w-16 h-1/2 bg-primary rounded-md" />
 
         {/* Content */}
         <div className="relative p-5">
           <div className="flex justify-between items-start mb-4">
             <h1 className="font-bold">TrashOS</h1>
-            
+
           </div>
 
           {/* Stats */}
