@@ -4,19 +4,21 @@ import { useState } from 'react';
 import { FaExclamationTriangle, FaRegLightbulb } from "react-icons/fa";
 import UpNav from "@/components/up-nav";
 import Navbar from "@/components/navbar";
+import { useImpactDetails } from '@/hooks/use-stats';
 
 export default function Statistics() {
     const [selectedPeriod, setSelectedPeriod] = useState('Weekly');
     const periods = ['Weekly', 'Monthly', 'Yearly'];
+    const { data: impDeets } = useImpactDetails();
 
-    // Simulated props/data for IMP DEETS
-    const impDeets = {
-        recycledItems: 12,
-        co2Averted: 0.5, // tonnes
-        earned: 200.4,   // INR
-        treesSaved: 0.8,
-        wasteGenerated: 4.3, // kg
-        fuelSaved: 13.7 // L
+    // Fallback if data is not loaded yet
+    const displayDeets = impDeets || {
+        recycledItems: 0,
+        co2Averted: 0,
+        earned: 0,
+        treesSaved: 0,
+        wasteGenerated: 0,
+        fuelSaved: 0
     };
 
     return (
@@ -55,27 +57,27 @@ export default function Statistics() {
                     <div className="space-y-3 text-sm font-medium text-primary-foreground">
                         <div>
                             <p className='text-secondary-foreground'>No of items recycled:</p>
-                            <p>= {impDeets.recycledItems}</p>
+                            <p>= {displayDeets.recycledItems}</p>
                         </div>
                         <div>
                             <p className='text-secondary-foreground'>CO2 averted:</p>
-                            <p>~ {impDeets.co2Averted} tonnes</p>
+                            <p>~ {displayDeets.co2Averted} tonnes</p>
                         </div>
                         <div>
                             <p className='text-secondary-foreground'>Earned so far</p>
-                            <p>~ INR {impDeets.earned}</p>
+                            <p>~ INR {displayDeets.earned}</p>
                         </div>
                         <div>
                             <p className='text-secondary-foreground'>Trees Saved</p>
-                            <p>~ {impDeets.treesSaved}</p>
+                            <p>~ {displayDeets.treesSaved}</p>
                         </div>
                         <div>
                             <p className='text-secondary-foreground'>Waste generated</p>
-                            <p>~ {impDeets.wasteGenerated}kg</p>
+                            <p>~ {displayDeets.wasteGenerated}kg</p>
                         </div>
                         <div>
                             <p className='text-secondary-foreground'>Fuel Saved</p>
-                            <p>~ {impDeets.fuelSaved}L</p>
+                            <p>~ {displayDeets.fuelSaved}L</p>
                         </div>
                     </div>
                 </div>
