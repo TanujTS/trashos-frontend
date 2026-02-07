@@ -13,11 +13,10 @@ export type PeriodStats = {
     weekly: string;
 };
 
-// Types for the Statistics Page
-export type ImpactDetails = {
+export type ImpactStats = {
     recycledItems: number;
-    co2Averted: number; // tonnes
-    earned: number;   // INR
+    co2Averted: number;
+    earned: number;
     treesSaved: number;
 };
 
@@ -32,8 +31,8 @@ export const statsService = {
         return response.data;
     },
 
-    getImpactDetails: async (): Promise<ImpactDetails> => {
-        const response = await apiClient.get<ImpactDetails>('/api/stats/impact');
+    getImpactStats: async (): Promise<ImpactStats> => {
+        const response = await apiClient.get<ImpactStats>('/api/stats/impact');
         return response.data;
-    }
+    },
 };

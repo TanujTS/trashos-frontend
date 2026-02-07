@@ -6,6 +6,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "@/components/providers/query-provider";
 import { AuthProvider } from "@/components/providers/auth-provider";
+import { Toaster } from "sonner";
 import Navbar from "@/components/navbar";
 import { usePathname } from "next/navigation";
 
@@ -48,6 +49,7 @@ export default function RootLayout({
         <QueryProvider>
           <AuthProvider>
             <LayoutContent>{children}</LayoutContent>
+            <Toaster richColors position="top-right" toastOptions={{ style: { zIndex: 99999 } }} />
           </AuthProvider>
         </QueryProvider>
       </body>

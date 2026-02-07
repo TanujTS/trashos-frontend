@@ -4,12 +4,12 @@ import { useState } from 'react';
 import { FaExclamationTriangle, FaRegLightbulb } from "react-icons/fa";
 import UpNav from "@/components/up-nav";
 import Navbar from "@/components/navbar";
-import { useImpactDetails } from '@/hooks/use-stats';
+import { useImpactStats } from '@/hooks/use-stats';
 
 export default function Statistics() {
     const [selectedPeriod, setSelectedPeriod] = useState('Weekly');
     const periods = ['Weekly', 'Monthly', 'Yearly'];
-    const { data: impDeets } = useImpactDetails();
+    const { data: impDeets } = useImpactStats();
 
     // Fallback if data is not loaded yet
     const displayDeets = impDeets || {

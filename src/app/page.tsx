@@ -1,14 +1,5 @@
-import Camera from "@/app/camera/page";
-import { ComponentExample } from "@/components/component-example";
-import Navbar from "@/components/navbar";
-
-
+import { redirect } from "next/navigation";
 
 export default function Page() {
-  return (
-    <div>
-      <Camera />
-    </div>
-
-  );
+  redirect("/dashboard");
 }

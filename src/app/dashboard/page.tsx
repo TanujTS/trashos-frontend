@@ -9,12 +9,13 @@ import { IoCameraOutline } from "react-icons/io5";
 import { usePeriodStats, useUserStats } from "@/hooks/use-stats";
 import { useSubmissions } from "@/hooks/use-submissions";
 import { format } from "date-fns";
+import Link from "next/link";
 
 export default function Dashboard() {
     // API Hooks
     const { data: stats } = useUserStats();
     const { data: periods } = usePeriodStats();
-    const { data: submissions } = useSubmissions({ page: 1, per_page: 5 }); // Get recent 5 submissions
+    const { data: submissions } = useSubmissions(1, 5); // Get recent 5 submissions
 
     // Fallbacks if data is loading or missing
     const defaultStats = {
@@ -76,11 +77,12 @@ export default function Dashboard() {
                 <div className="rounded-2xl bg-card p-3">
                     {submissions?.items && submissions.items.length > 0 ? (
                         submissions.items.map((submission: any) => (
-                            <ActivityItem
-                                key={submission.id}
-                                item={submission.classification?.replace('_', ' ') || "Recycled Item"}
-                                date={format(new Date(submission.created_at), "EEEE, d MMM yyyy")}
-                            />
+                            <Link key={submission.id} href={`/submissions/${submission.id}`} className="block">
+                                <ActivityItem
+                                    item={submission.classification?.replace('_', ' ') || "Recycled Item"}
+                                    date={format(new Date(submission.created_at), "EEEE, d MMM yyyy")}
+                                />
+                            </Link>
                         ))
                     ) : (
                         <div className="p-4 text-center text-foreground/50 text-sm">

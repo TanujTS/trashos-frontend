@@ -3,21 +3,21 @@ import { statsService } from '@/services/stats';
 
 export const useUserStats = () => {
     return useQuery({
-        queryKey: ['userStats'],
+        queryKey: ['stats', 'user'],
         queryFn: statsService.getUserStats,
     });
 };
 
 export const usePeriodStats = () => {
     return useQuery({
-        queryKey: ['periodStats'],
+        queryKey: ['stats', 'period'],
         queryFn: statsService.getPeriodStats,
     });
 };
 
-export const useImpactDetails = () => {
+export const useImpactStats = () => {
     return useQuery({
-        queryKey: ['impactDetails'],
-        queryFn: statsService.getImpactDetails,
+        queryKey: ['stats', 'impact'],
+        queryFn: statsService.getImpactStats,
     });
 };

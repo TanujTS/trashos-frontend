@@ -1,6 +1,6 @@
 "use client";
 
-import { useRegister } from '@/hooks/use-auth';
+import { useAuth } from '@/components/providers/auth-provider';
 import { useRouter } from 'next/navigation';
 
 import Image from "next/image";
@@ -13,10 +13,10 @@ import { Input } from "@/components/ui/input";
 const outfit = Outfit({ subsets: ["latin"] });
 
 const Signup = () => {
-    const { mutate: register, isPending, error } = useRegister();
+    const { register, isLoading } = useAuth();
     const router = useRouter();
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         const formData = new FormData(e.target as HTMLFormElement);
         const email = formData.get('email') as string;
@@ -29,14 +29,12 @@ const Signup = () => {
             return;
         }
 
-        register({ email, username, password }, {
-            onSuccess: () => {
-                router.push('/dashboard');
-            },
-            onError: (err) => {
-                console.error("Registration failed", err);
-            }
-        });
+        try {
+            await register({ email, username, password });
+            // Redirect handled in AuthContext
+        } catch (error) {
+            console.error("Registration failed", error);
+        }
     };
 
     return (
@@ -128,11 +126,6 @@ const Signup = () => {
                                 />
                             </div>
 
-                            {error && (
-                                <div className="text-red-500 text-sm font-medium">
-                                    {(error as any).response?.data?.detail || "Registration failed. Please try again."}
-                                </div>
-                            )}
                         </div>
 
                         {/* Sign Up Button - Lime Green */}
@@ -140,9 +133,9 @@ const Signup = () => {
                             type="submit"
                             size="lg"
                             className="w-full h-12 rounded-full text-lg font-semibold font-area-extended-bold bg-[#cdef45] hover:bg-[#b5d63a] text-black border-none cursor-pointer mt-4"
-                            disabled={isPending}
+                            disabled={isLoading}
                         >
-                            {isPending ? "Signing Up..." : "Sign Up"}
+                            {isLoading ? "Signing Up..." : "Sign Up"}
                         </Button>
                     </form>
 

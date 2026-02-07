@@ -1,11 +1,21 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { authService, LoginInput, RegisterInput, User } from '@/services/auth';
 
+export const userQueryKey = ['user'] as const;
+
 export const useUser = () => {
-    return useQuery({
-        queryKey: ['user'],
-        queryFn: authService.getMe,
+    return useQuery<User | null>({
+        queryKey: userQueryKey,
+        queryFn: async () => {
+            try {
+                return await authService.getMe();
+            } catch {
+                return null;
+            }
+        },
         retry: false,
+        staleTime: 5 * 60 * 1000, // 5 minutes — avoid refetching on every mount
+        refetchOnWindowFocus: true,
     });
 };
 
@@ -15,7 +25,7 @@ export const useLogin = () => {
     return useMutation({
         mutationFn: (data: LoginInput) => authService.login(data),
         onSuccess: (user) => {
-            queryClient.setQueryData(['user'], user);
+            queryClient.setQueryData(userQueryKey, user);
         },
     });
 };
@@ -26,7 +36,7 @@ export const useRegister = () => {
     return useMutation({
         mutationFn: (data: RegisterInput) => authService.register(data),
         onSuccess: (user) => {
-            queryClient.setQueryData(['user'], user);
+            queryClient.setQueryData(userQueryKey, user);
         },
     });
 };
@@ -37,8 +47,8 @@ export const useLogout = () => {
     return useMutation({
         mutationFn: authService.logout,
         onSuccess: () => {
-            queryClient.setQueryData(['user'], null);
-            queryClient.clear();
+            queryClient.setQueryData(userQueryKey, null);
+            queryClient.removeQueries(); // clear all cached data on logout
         },
     });
 };

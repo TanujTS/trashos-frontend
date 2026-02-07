@@ -6,27 +6,17 @@ export type Submission = {
     id: string;
     user_id: string;
     image_path_url: string;
-    classification?: string;
-    confidence?: number;
-    material_type?: string;
-    recyclable?: boolean;
-    resell_value?: string;
-    co2_saved?: number;
-    resell_places?: string[];
-    model_version?: string;
+    classification: string | null;
+    confidence: number | null;
+    material_type: string | null;
+    recyclable: boolean | null;
+    resell_value: number | null;
+    co2_saved: number | null;
+    resell_places: string[] | null;
+    model_version: string | null;
     status: SubmissionStatus;
     created_at: string;
     updated_at: string;
-};
-
-export type CreateSubmissionInput = {
-    file: File;
-};
-
-export type GetSubmissionsParams = {
-    page?: number;
-    per_page?: number;
-    status_filter?: SubmissionStatus;
 };
 
 export type SubmissionsResponse = {
@@ -39,9 +29,9 @@ export type SubmissionsResponse = {
 };
 
 export const submissionsService = {
-    create: async (data: CreateSubmissionInput): Promise<Submission> => {
+    create: async (file: Blob): Promise<Submission> => {
         const formData = new FormData();
-        formData.append('file', data.file);
+        formData.append('file', file);
 
         const response = await apiClient.post<Submission>('/api/submissions/', formData, {
             headers: {
@@ -51,7 +41,12 @@ export const submissionsService = {
         return response.data;
     },
 
-    getAll: async (params?: GetSubmissionsParams): Promise<SubmissionsResponse> => {
+    getAll: async (page = 1, per_page = 10, status_filter?: SubmissionStatus): Promise<SubmissionsResponse> => {
+        const params: any = { page, per_page };
+        if (status_filter) {
+            params.status_filter = status_filter;
+        }
+
         const response = await apiClient.get<SubmissionsResponse>('/api/submissions/', { params });
         return response.data;
     },
@@ -61,8 +56,12 @@ export const submissionsService = {
         return response.data;
     },
 
-    delete: async (id: string): Promise<{ message: string }> => {
-        const response = await apiClient.delete<{ message: string }>(`/api/submissions/${id}`);
+    delete: async (id: string): Promise<null> => {
+        const response = await apiClient.delete<null>(`/api/submissions/${id}`);
         return response.data;
     },
+
+    getFileUrl: (filename: string) => {
+        return `${process.env.NEXT_PUBLIC_API_URL}/api/submissions/files/${filename}`;
+    }
 };

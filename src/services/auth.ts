@@ -14,7 +14,7 @@ export type RegisterInput = {
 };
 
 export type LoginInput = {
-    username: string;
+    username: string; // accepts username OR email
     password: string;
 };
 

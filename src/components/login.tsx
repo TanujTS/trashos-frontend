@@ -1,6 +1,6 @@
 "use client";
 
-import { useLogin } from '@/hooks/use-auth';
+import { useAuth } from '@/components/providers/auth-provider';
 import { useRouter } from 'next/navigation';
 
 import Image from "next/image";
@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 const outfit = Outfit({ subsets: ["latin"] });
 
 const Login = () => {
-    const { mutate: login, isPending, error } = useLogin();
+    const { login, isLoading } = useAuth();
     const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -22,17 +22,12 @@ const Login = () => {
         const username = formData.get('username') as string;
         const password = formData.get('password') as string;
 
-        login(
-            { username, password },
-            {
-                onSuccess: () => {
-                    router.push('/dashboard');
-                },
-                onError: (err: Error) => {
-                    console.error("Login failed", err);
-                }
-            }
-        );
+        try {
+            await login({ username, password });
+            // Redirect handled in AuthContext
+        } catch (error) {
+            console.error("Login failed", error);
+        }
     };
 
     return (
@@ -101,11 +96,6 @@ const Login = () => {
                                 </div>
                             </div>
 
-                            {error && (
-                                <div className="text-red-500 text-sm font-medium">
-                                    {(error as any).response?.data?.detail || "Login failed. Please try again."}
-                                </div>
-                            )}
 
                         </div>
 
@@ -114,9 +104,9 @@ const Login = () => {
                             type="submit"
                             size="lg"
                             className="w-full h-12 rounded-full text-lg font-semibold font-area-extended-bold bg-[#cdef45] hover:bg-[#b5d63a] text-black border-none cursor-pointer mt-4"
-                            disabled={isPending}
+                            disabled={isLoading}
                         >
-                            {isPending ? "Logging in..." : "Login"}
+                            {isLoading ? "Logging in..." : "Login"}
                         </Button>
                     </form>
 

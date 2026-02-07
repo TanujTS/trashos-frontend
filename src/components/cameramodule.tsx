@@ -2,6 +2,8 @@
 
 import React, { useRef, useState, useEffect, useCallback } from "react";
 import { cn } from "@/lib/utils";
+import { useCreateSubmission } from "@/hooks/use-submissions";
+import { useRouter } from "next/navigation";
 
 // ============================================================================
 // Types & Interfaces
@@ -276,9 +278,16 @@ export const CameraModule: React.FC<CameraModuleProps> = ({
         }
     };
 
+    const { mutate: createSubmission, isPending: isSubmitting } = useCreateSubmission();
+    const router = useRouter();
+
     const handleSubmit = () => {
         if (capturedImage) {
-            onSubmit?.(capturedImage);
+            createSubmission(capturedImage.blob, {
+                onSuccess: () => {
+                    router.push('/dashboard');
+                }
+            });
         }
     };
 
@@ -452,13 +461,14 @@ export const CameraModule: React.FC<CameraModuleProps> = ({
                 {/* Upload Picture Button */}
                 <button
                     onClick={capturedImage ? handleSubmit : handleUploadClick}
+                    disabled={isSubmitting}
                     className="flex-1 flex items-center justify-center gap-1  px-2 py-2 rounded-full font-large text-base transition-all active:scale-95"
                     style={{
                         backgroundColor: "#ABC339",
                         color: "#1a1a1a",
                     }}
                 >
-                    <span>{capturedImage ? "submit picture" : "upload picture"}</span>
+                    <span>{capturedImage ? (isSubmitting ? "Submitting..." : "submit picture") : "upload picture"}</span>
                     <div
                         className="w-12 h-12 rounded-full flex items-center justify-center"
                         style={{ backgroundColor: "#1a1a1a" }}
