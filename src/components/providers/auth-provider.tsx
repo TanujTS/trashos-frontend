@@ -3,7 +3,7 @@
 import React, { createContext, useContext } from 'react';
 import { User, LoginInput, RegisterInput } from '@/services/auth';
 import { useUser, useLogin, useRegister, useLogout } from '@/hooks/use-auth';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { toast } from 'sonner';
 
 interface AuthContextType {
@@ -18,6 +18,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
     const router = useRouter();
+    const pathname = usePathname();
 
     const { data: user, isLoading: isUserLoading } = useUser();
     const loginMutation = useLogin();
@@ -25,6 +26,28 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const logoutMutation = useLogout();
 
     const isLoading = isUserLoading || loginMutation.isPending || registerMutation.isPending || logoutMutation.isPending;
+
+    // Public routes that don't require authentication
+    const publicRoutes = ['/', '/signin', '/signup'];
+    const isPublicRoute = publicRoutes.includes(pathname);
+
+    React.useEffect(() => {
+        if (!isUserLoading && !user && !isPublicRoute) {
+            router.push('/signin');
+        }
+        if (!isUserLoading && user && (pathname === '/signin' || pathname === '/signup')) {
+            router.push('/dashboard');
+        }
+    }, [user, isUserLoading, isPublicRoute, router, pathname]);
+
+    if (isUserLoading) {
+        // You might want a better loading spinner here
+        return <div className="flex h-screen items-center justify-center">Loading...</div>;
+    }
+
+    if (!isUserLoading && !user && !isPublicRoute) {
+        return null; // Don't render protected content while redirecting
+    }
 
     const login = async (data: LoginInput) => {
         try {

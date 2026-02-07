@@ -27,8 +27,18 @@ export const useCreateSubmission = () => {
             queryClient.invalidateQueries({ queryKey: ['submissions'] });
             toast.success('Submission created successfully');
         },
-        onError: (error: AxiosError<{ detail?: string }>) => {
-            toast.error(error.response?.data?.detail || 'Failed to create submission');
+        onError: (error: AxiosError<{ detail?: string | any[] }>) => {
+            const detail = error.response?.data?.detail;
+            let message = 'Failed to create submission';
+
+            if (typeof detail === 'string') {
+                message = detail;
+            } else if (Array.isArray(detail)) {
+                // If it's a validation error array, join the messages
+                message = detail.map((err: any) => err.msg).join(', ');
+            }
+
+            toast.error(message);
         },
     });
 };

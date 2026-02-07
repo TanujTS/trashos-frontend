@@ -29,20 +29,26 @@ export type SubmissionsResponse = {
 };
 
 export const submissionsService = {
-    create: async (file: Blob): Promise<Submission> => {
+    create: async (file: Blob | File): Promise<Submission> => {
         const formData = new FormData();
-        formData.append('file', file);
+
+        // If it's a File, it has a name. If it's a Blob (from camera capture), we need to give it a name.
+        if (file instanceof File) {
+            formData.append('file', file);
+        } else {
+            formData.append('file', file, 'capture.jpg');
+        }
 
         const response = await apiClient.post<Submission>('/api/submissions/', formData, {
             headers: {
-                'Content-Type': 'multipart/form-data',
+                'Content-Type': undefined,
             },
         });
         return response.data;
     },
 
     getAll: async (page = 1, per_page = 10, status_filter?: SubmissionStatus): Promise<SubmissionsResponse> => {
-        const params: any = { page, per_page };
+        const params: Record<string, any> = { page, per_page };
         if (status_filter) {
             params.status_filter = status_filter;
         }
