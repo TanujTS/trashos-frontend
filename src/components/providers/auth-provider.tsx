@@ -5,6 +5,7 @@ import { User, LoginInput, RegisterInput } from '@/services/auth';
 import { useUser, useLogin, useRegister, useLogout } from '@/hooks/use-auth';
 import { useRouter, usePathname } from 'next/navigation';
 import { toast } from 'sonner';
+import Loader from "@/components/loader";
 
 interface AuthContextType {
     user: User | null;
@@ -42,7 +43,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     if (isUserLoading) {
         // You might want a better loading spinner here
-        return <div className="flex h-screen items-center justify-center">Loading...</div>;
+        return <Loader />;
     }
 
     if (!isUserLoading && !user && !isPublicRoute) {

@@ -6,6 +6,7 @@ import UpNav from "@/components/up-nav";
 import Navbar from "@/components/navbar";
 import { useImpactStats, useCO2History } from '@/hooks/use-stats';
 import { NumberDotLineChart } from '@/components/ui/number-dot-chart';
+import Loader from "@/components/loader";
 
 export default function Statistics() {
     const [selectedPeriod, setSelectedPeriod] = useState('Weekly');
@@ -20,6 +21,10 @@ export default function Statistics() {
         earned: 0,
         treesSaved: 0,
     };
+
+    if (isHistoryLoading) {
+        return <Loader />;
+    }
 
     return (
         <div className="min-h-screen bg-background px-4 pt-6 pb-28 font-sans">
@@ -97,21 +102,14 @@ export default function Statistics() {
             {/* Overview */}
             <h2 className="mt-8 text-xl font-bold text-foreground">Overview</h2>
 
-            {/* White Rectangle Box (Graph Placeholder) */}
             {/* Graph */}
             <div className="mt-4 w-full">
-                {isHistoryLoading ? (
-                    <div className="bg-card rounded-[30px] h-64 border border-foreground flex items-center justify-center">
-                        <p className="text-muted-foreground animate-pulse">Loading chart data...</p>
-                    </div>
-                ) : (
-                    <NumberDotLineChart
-                        data={historyData || []}
-                        title={`CO2 Averted (${selectedPeriod})`}
-                        description={`CO2 savings over the last ${selectedPeriod === 'Weekly' ? '7 days' : selectedPeriod === 'Monthly' ? '4 weeks' : '6 months'}`}
-                        color="#ABC339"
-                    />
-                )}
+                <NumberDotLineChart
+                    data={historyData || []}
+                    title={`CO2 Averted (${selectedPeriod})`}
+                    description={`CO2 savings over the last ${selectedPeriod === 'Weekly' ? '7 days' : selectedPeriod === 'Monthly' ? '4 weeks' : '6 months'}`}
+                    color="#ABC339"
+                />
             </div>
 
             <Navbar />
