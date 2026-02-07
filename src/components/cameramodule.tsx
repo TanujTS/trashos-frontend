@@ -457,23 +457,34 @@ export const CameraModule: React.FC<CameraModuleProps> = ({
             </div>
 
             {/* Buttons Row */}
-            <div className="flex items-center gap-3 w-full px-8">
+            <div className="flex items-center gap-4 w-full px-8">
                 {/* Upload Picture Button */}
                 <button
                     onClick={capturedImage ? handleSubmit : handleUploadClick}
                     disabled={isSubmitting}
-                    className="flex-1 flex items-center justify-center gap-1  px-2 py-2 rounded-full font-large text-base transition-all active:scale-95"
+                    className="flex-1 flex items-center justify-center gap-3 px-4 py-3 rounded-full font-medium text-base transition-all active:scale-95 disabled:opacity-60 shadow-lg hover:shadow-xl"
                     style={{
                         backgroundColor: "#ABC339",
                         color: "#1a1a1a",
                     }}
                 >
-                    <span>{capturedImage ? (isSubmitting ? "Submitting..." : "submit picture") : "upload picture"}</span>
+                    <span className="flex-1 text-center tracking-wide">
+                        {capturedImage ? (isSubmitting ? "Submitting..." : "Submit Picture") : "Upload Picture"}
+                    </span>
                     <div
-                        className="w-12 h-12 rounded-full flex items-center justify-center"
+                        className="w-11 h-11 rounded-full flex items-center justify-center transition-transform group-active:rotate-12 shadow-md"
                         style={{ backgroundColor: "#1a1a1a" }}
                     >
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5">
+                        <svg
+                            width="18"
+                            height="18"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="#ABC339"
+                            strokeWidth="2.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        >
                             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                             <polyline points="17 8 12 3 7 8" />
                             <line x1="12" y1="3" x2="12" y2="15" />
@@ -481,18 +492,27 @@ export const CameraModule: React.FC<CameraModuleProps> = ({
                     </div>
                 </button>
 
-
                 {/* Camera Button */}
                 <button
                     onClick={capturedImage ? retryCamera : capturePhoto}
                     disabled={status !== "active" && !capturedImage}
-                    className="w-16 h-16 rounded-full flex items-center justify-center transition-all active:scale-90 disabled:opacity-50"
+                    className="w-16 h-16 rounded-full flex items-center justify-center transition-all active:scale-90 disabled:opacity-50 shadow-lg hover:shadow-xl disabled:cursor-not-allowed"
                     style={{
                         backgroundColor: "#ABC339",
                     }}
                     aria-label={capturedImage ? "Retake Photo" : "Capture Photo"}
                 >
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" strokeWidth="2">
+                    <svg
+                        width="26"
+                        height="26"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="#1a1a1a"
+                        strokeWidth="2.2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="transition-transform active:rotate-12"
+                    >
                         {capturedImage ? (
                             // Refresh icon for retake
                             <>

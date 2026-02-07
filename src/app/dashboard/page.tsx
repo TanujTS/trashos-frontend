@@ -10,6 +10,8 @@ import { usePeriodStats, useUserStats } from "@/hooks/use-stats";
 import { useSubmissions } from "@/hooks/use-submissions";
 import { format } from "date-fns";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+
 
 export default function Dashboard() {
     // API Hooks
@@ -45,12 +47,16 @@ export default function Dashboard() {
         weekly: periods?.weekly?.toString() || defaultPeriods.weekly,
     };
 
+    const router = useRouter();
+
     return (
         <div className="min-h-screen bg-background px-4 pt-6 pb-28 font-sans">
             {/* Header */}
             <Header name={displayStats.name} />
 
-            <button className="absolute top-24 right-4 bg-primary text-foreground px-6 py-2 rounded-full flex items-center gap-2 text-sm font-medium border-1 border-foreground">
+            <button
+                onClick={() => router.push("/camera")}
+                className="absolute top-24 right-4 bg-primary text-foreground px-6 py-2 rounded-full flex z-40 items-center gap-2 text-sm font-medium border-1 border-foreground">
                 <IoCameraOutline size={18} />
                 Scan now
             </button>
