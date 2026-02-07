@@ -1,3 +1,5 @@
+"use client";
+
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Inter } from "next/font/google";
@@ -5,6 +7,7 @@ import "./globals.css";
 import QueryProvider from "@/components/providers/query-provider";
 import { AuthProvider } from "@/components/providers/auth-provider";
 import Navbar from "@/components/navbar";
+import { usePathname } from "next/navigation";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -18,10 +21,19 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "TrashOS",
-  description: "Waste management simplified.",
-};
+function LayoutContent({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+
+  // Hide navbar on these routes
+  const hideNavbar = pathname === '/' || pathname === '/signin' || pathname === '/signup';
+
+  return (
+    <>
+      {children}
+      {!hideNavbar && <Navbar />}
+    </>
+  );
+}
 
 export default function RootLayout({
   children,
@@ -35,8 +47,7 @@ export default function RootLayout({
       >
         <QueryProvider>
           <AuthProvider>
-            {children}
-            <Navbar />
+            <LayoutContent>{children}</LayoutContent>
           </AuthProvider>
         </QueryProvider>
       </body>
