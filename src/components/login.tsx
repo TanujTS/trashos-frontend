@@ -95,7 +95,7 @@ const Login = () => {
                                 />
                                 <div className="flex justify-end">
                                     <span className="text-sm text-[#cdef45] font-area-extended-bold cursor-pointer hover:underline">
-                                        Forgot Password?
+                                        Not registered? Sign Up
                                     </span>
                                 </div>
                             </div>
