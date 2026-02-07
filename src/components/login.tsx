@@ -1,5 +1,8 @@
 "use client";
 
+import { useLogin } from '@/hooks/use-auth';
+import { useRouter } from 'next/navigation';
+
 import Image from "next/image";
 import { Outfit } from "next/font/google";
 import { Mail, Lock } from "lucide-react";
@@ -10,6 +13,28 @@ import { Input } from "@/components/ui/input";
 const outfit = Outfit({ subsets: ["latin"] });
 
 const Login = () => {
+    const { mutate: login, isPending, error } = useLogin();
+    const router = useRouter();
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        const formData = new FormData(e.target as HTMLFormElement);
+        const username = formData.get('username') as string;
+        const password = formData.get('password') as string;
+
+        login(
+            { username, password },
+            {
+                onSuccess: () => {
+                    router.push('/dashboard');
+                },
+                onError: (err) => {
+                    console.error("Login failed", err);
+                }
+            }
+        );
+    };
+
     return (
         // Main container with light background specific to design (#efffd0 approx from image)
         <div className={`flex min-h-screen flex-col bg-[#efffd0] ${outfit.className} overflow-hidden font-sans`}>
@@ -42,15 +67,16 @@ const Login = () => {
                         Login
                     </h2>
 
-                    <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+                    <form className="space-y-6" onSubmit={handleSubmit}>
                         <div className="space-y-4">
                             {/* Email */}
                             <div className="relative">
                                 <Mail className="absolute font-area-extended-bold left-4 top-3.5 h-5 w-5 text-gray-400 z-10" />
                                 <Input
-                                    id="email"
-                                    placeholder="Email"
-                                    type="email"
+                                    id="username"
+                                    name="username"
+                                    placeholder="Username"
+                                    type="text"
                                     className="pl-12 h-12 rounded-full bg-white border-none text-black placeholder:text-gray-400 focus-visible:ring-0 not-placeholder-shown:bg-[#efffd0]"
                                     required
                                 />
@@ -61,6 +87,7 @@ const Login = () => {
                                 <Lock className="absolute font-area-extended-bold left-4 top-3.5 h-5 w-5 text-gray-400 z-10" />
                                 <Input
                                     id="password"
+                                    name="password"
                                     placeholder="Password"
                                     type="password"
                                     className="pl-12 h-12 rounded-full bg-white border-none text-black placeholder:text-gray-400 focus-visible:ring-0 not-placeholder-shown:bg-[#efffd0]"
@@ -73,6 +100,12 @@ const Login = () => {
                                 </div>
                             </div>
 
+                            {error && (
+                                <div className="text-red-500 text-sm font-medium">
+                                    {(error as any).response?.data?.detail || "Login failed. Please try again."}
+                                </div>
+                            )}
+
                         </div>
 
                         {/* Sign Up Button - Lime Green */}
@@ -80,8 +113,9 @@ const Login = () => {
                             type="submit"
                             size="lg"
                             className="w-full h-12 rounded-full text-lg font-semibold font-area-extended-bold bg-[#cdef45] hover:bg-[#b5d63a] text-black border-none cursor-pointer mt-4"
+                            disabled={isPending}
                         >
-                            Login
+                            {isPending ? "Logging in..." : "Login"}
                         </Button>
                     </form>
 
