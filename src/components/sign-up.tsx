@@ -108,6 +108,7 @@ const Signup = () => {
                                     id="password"
                                     name="password"
                                     placeholder="Password"
+                                    autoComplete="new-password"
                                     type="password"
                                     className="pl-12 h-12 rounded-full bg-white border-none text-black placeholder:text-gray-400 focus-visible:ring-0 not-placeholder-shown:bg-[#efffd0]"
                                     required

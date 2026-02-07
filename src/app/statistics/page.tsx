@@ -101,6 +101,8 @@ export default function Statistics() {
                     graph of co2 averted
                 </p>
             </div>
+
+            <Navbar activeIndex={0} />
         </div>
     );
 }

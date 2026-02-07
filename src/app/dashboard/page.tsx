@@ -4,6 +4,7 @@ import Header from "@/components/header";
 import PeriodCards from "@/components/period-card";
 import ActivityItem from "@/components/activity-item";
 import StatsCard from "@/components/stats-card";
+import Navbar from "@/components/navbar";
 import { IoCameraOutline } from "react-icons/io5";
 import { usePeriodStats, useUserStats } from "@/hooks/use-stats";
 import { useSubmissions } from "@/hooks/use-submissions";
@@ -88,6 +89,8 @@ export default function Dashboard() {
                     )}
                 </div>
             </div>
+
+            <Navbar activeIndex={2} />
         </div>
     );
 }

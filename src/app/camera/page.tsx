@@ -18,7 +18,7 @@ export default function Camera() {
                     We run your picture through a trained ml model to categorise the waste based on its recyclability, we then provide you with resell value and where to resell to make the best use of the generated waste. We also help you keep track of CO2 emissions, fuel saved and waste generated with mini fun facts.
                 </p>
             </div>
-            <Navbar />
+            <Navbar activeIndex={1} />
         </div>
     );
 }
