@@ -17,8 +17,6 @@ export default function Statistics() {
         co2Averted: 0,
         earned: 0,
         treesSaved: 0,
-        wasteGenerated: 0,
-        fuelSaved: 0
     };
 
     return (
@@ -71,14 +69,6 @@ export default function Statistics() {
                             <p className='text-secondary-foreground'>Trees Saved</p>
                             <p>~ {displayDeets.treesSaved}</p>
                         </div>
-                        <div>
-                            <p className='text-secondary-foreground'>Waste generated</p>
-                            <p>~ {displayDeets.wasteGenerated}kg</p>
-                        </div>
-                        <div>
-                            <p className='text-secondary-foreground'>Fuel Saved</p>
-                            <p>~ {displayDeets.fuelSaved}L</p>
-                        </div>
                     </div>
                 </div>
 
@@ -108,7 +98,7 @@ export default function Statistics() {
             {/* White Rectangle Box (Graph Placeholder) */}
             <div className="mt-4 w-full bg-card rounded-[30px] h-64 p-6 border border-foreground flex items-center justify-center text-center">
                 <p className="text-foreground font-medium max-w-[200px]">
-                    graph of co2 averted and fuel saved
+                    graph of co2 averted
                 </p>
             </div>
         </div>
