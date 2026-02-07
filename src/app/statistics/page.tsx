@@ -111,8 +111,6 @@ export default function Statistics() {
                     graph of co2 averted and fuel saved
                 </p>
             </div>
-
-            <Navbar />
         </div>
     );
 }

@@ -29,8 +29,19 @@ export default function Dashboard() {
         weekly: "0",
     };
 
-    const displayStats = stats || defaultStats;
-    const displayPeriods = periods || defaultPeriods;
+    // Safely map API data to display format
+    const displayStats = {
+        totalKg: stats?.totalKg?.toString() || defaultStats.totalKg,
+        revenue: stats?.revenue?.toString() || defaultStats.revenue,
+        name: stats?.name || defaultStats.name,
+        joinedDate: stats?.joinedDate || defaultStats.joinedDate,
+    };
+
+    const displayPeriods = {
+        yearly: periods?.yearly?.toString() || defaultPeriods.yearly,
+        monthly: periods?.monthly?.toString() || defaultPeriods.monthly,
+        weekly: periods?.weekly?.toString() || defaultPeriods.weekly,
+    };
 
     return (
         <div className="min-h-screen bg-background px-4 pt-6 pb-28 font-sans">
@@ -63,7 +74,7 @@ export default function Dashboard() {
 
                 <div className="rounded-2xl bg-card p-3">
                     {submissions?.items && submissions.items.length > 0 ? (
-                        submissions.items.map((submission) => (
+                        submissions.items.map((submission: any) => (
                             <ActivityItem
                                 key={submission.id}
                                 item={submission.classification?.replace('_', ' ') || "Recycled Item"}
