@@ -28,7 +28,7 @@ const Login = () => {
                 onSuccess: () => {
                     router.push('/dashboard');
                 },
-                onError: (err) => {
+                onError: (err: Error) => {
                     console.error("Login failed", err);
                 }
             }

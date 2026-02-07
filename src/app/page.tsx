@@ -1,13 +1,14 @@
-import CameraModule from "@/components/camera";
+import Camera from "@/components/camera";
+import CameraModule from "@/components/cameramodule";
 import { ComponentExample } from "@/components/component-example";
 import Navbar from "@/components/navbar";
-import Dashboard from "@/pages/dashboard";
-import Statistics from "@/pages/statistics";
+
 
 
 export default function Page() {
   return (
     <div>
+      <Camera />
     </div>
 
   );
