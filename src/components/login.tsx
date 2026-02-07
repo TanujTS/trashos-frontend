@@ -94,7 +94,7 @@ const Login = () => {
                                     required
                                 />
                                 <div className="flex justify-end">
-                                    <span className="text-sm text-[#cdef45] font-area-extended-bold cursor-pointer hover:underline">
+                                    <span onClick={() => router.push("/signup")} className="text-sm text-[#cdef45] font-area-extended-bold cursor-pointer hover:underline">
                                         Not registered? Sign Up
                                     </span>
                                 </div>

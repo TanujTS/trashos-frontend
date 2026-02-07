@@ -112,7 +112,7 @@ export default function Statistics() {
                 </p>
             </div>
 
-            <Navbar />
+            <Navbar activeIndex={0} />
         </div>
     );
 }
