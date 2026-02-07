@@ -92,7 +92,7 @@ export default function Dashboard() {
                 </div>
             </div>
 
-            <Navbar activeIndex={2} />
+            <Navbar />
         </div>
     );
 }

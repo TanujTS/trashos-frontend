@@ -127,7 +127,7 @@ export default function SubmissionDetails() {
                 )}
             </div>
 
-            <Navbar activeIndex={2} />
+            <Navbar />
         </div>
     );
 }

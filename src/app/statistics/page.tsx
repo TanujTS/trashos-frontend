@@ -4,12 +4,14 @@ import { useState } from 'react';
 import { FaExclamationTriangle, FaRegLightbulb } from "react-icons/fa";
 import UpNav from "@/components/up-nav";
 import Navbar from "@/components/navbar";
-import { useImpactStats } from '@/hooks/use-stats';
+import { useImpactStats, useCO2History } from '@/hooks/use-stats';
+import { NumberDotLineChart } from '@/components/ui/number-dot-chart';
 
 export default function Statistics() {
     const [selectedPeriod, setSelectedPeriod] = useState('Weekly');
     const periods = ['Weekly', 'Monthly', 'Yearly'];
     const { data: impDeets } = useImpactStats();
+    const { data: historyData, isLoading: isHistoryLoading } = useCO2History(selectedPeriod as 'Weekly' | 'Monthly' | 'Yearly');
 
     // Fallback if data is not loaded yet
     const displayDeets = impDeets || {
@@ -96,13 +98,23 @@ export default function Statistics() {
             <h2 className="mt-8 text-xl font-bold text-foreground">Overview</h2>
 
             {/* White Rectangle Box (Graph Placeholder) */}
-            <div className="mt-4 w-full bg-card rounded-[30px] h-64 p-6 border border-foreground flex items-center justify-center text-center">
-                <p className="text-foreground font-medium max-w-[200px]">
-                    graph of co2 averted
-                </p>
+            {/* Graph */}
+            <div className="mt-4 w-full">
+                {isHistoryLoading ? (
+                    <div className="bg-card rounded-[30px] h-64 border border-foreground flex items-center justify-center">
+                        <p className="text-muted-foreground animate-pulse">Loading chart data...</p>
+                    </div>
+                ) : (
+                    <NumberDotLineChart
+                        data={historyData || []}
+                        title={`CO2 Averted (${selectedPeriod})`}
+                        description={`CO2 savings over the last ${selectedPeriod === 'Weekly' ? '7 days' : selectedPeriod === 'Monthly' ? '4 weeks' : '6 months'}`}
+                        color="#ABC339"
+                    />
+                )}
             </div>
 
-            <Navbar activeIndex={0} />
+            <Navbar />
         </div>
     );
 }

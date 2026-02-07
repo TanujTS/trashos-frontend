@@ -16,53 +16,70 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { Badge } from "@/components/ui/badge";
-import { TrendingDown } from "lucide-react";
 
-const chartData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 73 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
-];
 
-const chartConfig = {
-  desktop: {
-    label: "Desktop",
-    color: "var(--chart-2)",
-  },
-} satisfies ChartConfig;
+interface ChartDataPoint {
+  label: string;
+  value: number;
+}
 
-export function NumberDotLineChart() {
+interface NumberDotLineChartProps {
+  data: ChartDataPoint[];
+  title?: string;
+  description?: string;
+  trend?: {
+    value: number;
+    label: string;
+  };
+  color?: string;
+}
+
+export function NumberDotLineChart({
+  data,
+  title = "Statistics",
+  description = "Recent activity",
+  trend,
+  color = "hsl(var(--primary))"
+}: NumberDotLineChartProps) {
+
+  const chartConfig = {
+    value: {
+      label: "Value",
+      color: color,
+    }
+  } satisfies ChartConfig;
+
   return (
-    <Card>
+    <Card className="w-full">
       <CardHeader>
-        <CardTitle>
-          Number Dot Chart
-          <Badge
-            variant="outline"
-            className="text-red-500 bg-red-500/10 border-none ml-2"
-          >
-            <TrendingDown className="h-4 w-4" />
-            <span>-5.2%</span>
-          </Badge>
+        <CardTitle className="flex items-center gap-2">
+          {title}
+          {trend && (
+            <Badge
+              variant="outline"
+              className={`border-none ml-2 ${trend.value >= 0 ? 'text-green-500 bg-green-500/10' : 'text-red-500 bg-red-500/10'}`}
+            >
+              {trend.value >= 0 ? '+' : ''}{trend.value}%
+            </Badge>
+          )}
         </CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
           <LineChart
             accessibilityLayer
-            data={chartData}
+            data={data}
             margin={{
               left: 12,
               right: 12,
+              top: 10,
+              bottom: 10
             }}
           >
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="month"
+              dataKey="label"
               tickLine={false}
               axisLine={false}
               tickMargin={8}
@@ -74,12 +91,13 @@ export function NumberDotLineChart() {
               content={<ChartTooltipContent hideLabel />}
             />
             <Line
-              dataKey="desktop"
+              dataKey="value"
               type="linear"
-              stroke="var(--color-desktop)"
+              stroke={color}
+              strokeWidth={2}
               strokeDasharray="4 4"
-              dot={<CustomizedDot />}
-              activeDot={() => <></>}
+              dot={<CustomizedDot color={color} />}
+              activeDot={{ r: 6, fill: color }}
             />
           </LineChart>
         </ChartContainer>
@@ -89,14 +107,14 @@ export function NumberDotLineChart() {
 }
 
 const CustomizedDot = (
-  props: React.SVGProps<SVGCircleElement> & { value?: number }
+  props: React.SVGProps<SVGCircleElement> & { value?: number; color?: string }
 ) => {
-  const { cx, cy, stroke, value } = props;
+  const { cx, cy, value, color } = props;
 
   return (
     <g>
       {/* Main dot */}
-      <circle cx={cx} cy={cy} r={9} fill={stroke} />
+      <circle cx={cx} cy={cy} r={9} fill={color || "currentColor"} />
       <text
         className="dark:text-black text-white"
         x={cx}
