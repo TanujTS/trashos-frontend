@@ -11,7 +11,8 @@ export function proxy(request: NextRequest) {
     if (isProtectedRoute) {
         // Check for common auth cookies
         // Adjust 'access_token' if the actual cookie name is different
-        const token = request.cookies.get('access_token') ||
+        const token = request.cookies.get('auth_token') ||
+            request.cookies.get('access_token') ||
             request.cookies.get('session_id') ||
             request.cookies.get('token');
 
