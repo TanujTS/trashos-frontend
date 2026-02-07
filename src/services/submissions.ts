@@ -7,6 +7,9 @@ export type Submission = {
     user_id: string;
     image_path_url: string;
     classification?: string;
+    confidence?: number;
+    material_type?: string;
+    recyclable?: boolean;
     resell_value?: string;
     co2_saved?: number;
     resell_places?: string[];
